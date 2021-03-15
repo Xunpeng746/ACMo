@@ -18,8 +18,9 @@ This project hosts the code for implementing the ACMo optimizer for training ima
 
 ## Usage
 
-### Training
-    ./pytorch_cifar_task/train.sh --optimizer=OPTIMIZER --lr=LEARNING_RATE --epoch=EPOCH_NUM --wd=WEIGHT_DECAY
+### Image Classification Training
+    cd ./pytorch_cifar_task
+    ./train.sh --optimizer=OPTIMIZER --lr=LEARNING_RATE --epoch=EPOCH_NUM --wd=WEIGHT_DECAY
 
 
 ## Acknowledgement
