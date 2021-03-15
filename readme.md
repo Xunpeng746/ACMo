@@ -19,7 +19,7 @@ This project hosts the code for implementing the ACMo optimizer for training ima
 ## Usage
 
 ### Training
-    ./train.sh --optimizer=OPTIMIZER --lr=LEARNING_RATE --epoch=EPOCH_NUM --wd=WEIGHT_DECAY
+    ./pytorch_cifar_task/train.sh --optimizer=OPTIMIZER --lr=LEARNING_RATE --epoch=EPOCH_NUM --wd=WEIGHT_DECAY
 
 
 ## Acknowledgement
@@ -31,7 +31,7 @@ Please consider citing our paper in your publications if the project helps your 
 @inproceedings{huang2021acmo,
   title= {ACMo: Angle-Calibrated Moment Methods for Stochastic Optimization},
   author= {Xunpeng Huang, Runxin Xu, Hao Zhou, Zhe Wang, Zhengyang Liu, Lei Li},
-  booktitle =  {Proceedings of the 34th AAAI Conference on Artificial Intelligence (AAAI'21)},
-  year={2021}
+  booktitle = {Proceedings of the 34th AAAI Conference on Artificial Intelligence (AAAI'21)},
+  year= {2021}
 }
 ```
