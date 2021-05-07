@@ -10,11 +10,11 @@ fairseq-preprocess --source-lang de --target-lang en \
     --workers 20
 
 # Train
-CUDA_VISIBLE_DEVICES=4 fairseq-train \
+CUDA_VISIBLE_DEVICES=0 fairseq-train \
     data-bin/iwslt14.tokenized.de-en \
     --arch transformer_iwslt_de_en --share-decoder-input-output-embed \
     --optimizer acmo --acmo-betas '(0.9, 0.98)' --clip-norm 0.0 \
-    --lr 1e-5 \
+    --lr 1e-2 \
     --dropout 0.1 --weight-decay 0.0001 \
     --criterion label_smoothed_cross_entropy --label-smoothing 0.1 \
     --max-tokens 4096 \
@@ -24,7 +24,8 @@ CUDA_VISIBLE_DEVICES=4 fairseq-train \
     --eval-bleu-remove-bpe \
     --eval-bleu-print-samples \
     --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
-    --user-dir ./acmo
+    --user-dir ./acmo \
+    --keep-best-checkpoints 5
 
 # --lr-scheduler inverse_sqrt --warmup-updates 4000 \
 # Generate

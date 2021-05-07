@@ -67,6 +67,38 @@ class Acutum_Original(Optimizer):
         if closure is not None:
             loss = closure()
 
+        grad_host = None
+        moment_host = None
+
+        for group in self.param_groups:
+            for p in group['params']:
+                if p.grad is None:
+                    continue
+                grad = p.grad.data
+                if grad.is_sparse:
+                    raise RuntimeError('Autum does not support sparse gradients, please consider SparseAdam instead')
+                state = self.state[p]
+                # State initialization
+                if len(state) == 0:
+                    state['step'] = 0
+                    state['exp_avg'] = torch.zeros_like(p.data)
+                exp_avg= state['exp_avg']
+
+                if grad_host is None:
+                    grad_host = grad.view(-1)
+                else:
+                    grad_host = torch.cat((grad_host, grad.view(-1)), dim=-1)
+
+                
+                if moment_host is None:
+                    moment_host = exp_avg.view(-1)
+                else:
+                    moment_host = torch.cat((moment_host, exp_avg.view(-1)), dim=-1)
+        
+        grad_norm = torch.norm(grad_host)
+        moment_norm = torch.norm(moment_host)
+
+
         for group in self.param_groups:
             for p in group['params']:
                 if p.grad is None:
@@ -91,10 +123,10 @@ class Acutum_Original(Optimizer):
                     grad.add_(group['weight_decay'], p.data)
 
                 # make gradient and momentum sharp
-                grad_norm = torch.norm(grad.reshape(-1, ))
-                moment_norm = torch.norm(exp_avg.reshape(-1, ))
+                # grad_norm = torch.norm(grad.reshape(-1, ))
+                # moment_norm = torch.norm(exp_avg.reshape(-1, ))
 
-                exp_avg.mul_(grad_norm.div(moment_norm.add(group['eps']))).add_(grad).mul_(0.5)
+                exp_avg.mul_(grad_norm.div(moment_norm.add(group['eps']))).add_(grad).mul_(0.9)
                 step_size = group['lr']
 
                 p.data.add_(exp_avg.mul(-step_size))
